@@ -5,27 +5,24 @@ from selenium.webdriver.support.ui import Select
 import time
 
 
-class PythonOrgSearch(unittest.TestCase):
+driver = webdriver.Safari()
 
-    def setUp(self):
-        self.driver = webdriver.Safari()
+driver.get("http://www.kino.kz")
 
-    def test_search_in_python_org(self):
+# cities = []     # все города
+# elem = driver.find_element_by_xpath("//select[@name='city-select']")
+# all_options = elem.find_elements_by_tag_name("option")
+# for option in all_options:
+#     cities.append(option.get_attribute("innerHTML"))
+# print(cities)
 
-        driver = self.driver
-        driver.get("http://www.kino.kz")
-        lis = []
+icons = driver.find_elements_by_class_name("mov_title_block")       # расркыть все фильмы
+for icon in icons:
+    driver.execute_script("arguments[0].click();", icon)
 
-        elem = driver.find_element_by_xpath("//select[@name='city-select']")
-        all_options = elem.find_elements_by_tag_name("option")
-        for option in all_options:
-            lis.append(option.get_attribute("city-select"))
-        print(lis)
+schedules = driver.find_elements_by_class_name("arr_select")        # раскрыть всё расписание
+for schedule in schedules:
+    driver.execute_script("arguments[0].click();", schedule)
 
-        assert "No results found" not in driver.page_source
-    def tearDown(self):
-        self.driver.close()
-
-
-if __name__ == "__main__":
-    unittest.main()
+time.sleep(2)
+driver.close()
