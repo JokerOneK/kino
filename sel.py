@@ -4,16 +4,24 @@ from selenium.webdriver.support.ui import Select
 import time
 
 
+def time_for_film(film):
+    times = []
+    cells = driver.find_elements_by_xpath("//*[@id='%s']/tbody/tr/td[2]/div" % film)     # достать время фильма
+    for cell in cells:
+        times.append(cell.get_attribute("innerHTML"))
+
+    cin = []
+    cinemas = driver.find_elements_by_xpath("//*[@id='%s']/tbody/tr/td[1]/a" % film)     # достать кино фильма
+    # print([cinema.text for cinema in cinemas])
+    for cine in cinemas:
+        cin.append(cine.text)
+
+    return list((zip(times, cin)))
+
+
 driver = webdriver.Chrome()
 
 driver.get("http://www.kino.kz")
-
-# cities = []     # все города
-# elem = driver.find_element_by_xpath("//select[@name='city-select']")
-# all_options = elem.find_elements_by_tag_name("option")
-# for option in all_options:
-#     cities.append(option.get_attribute("innerHTML"))
-# print(cities)
 
 icons = driver.find_elements_by_class_name("mov_title_block")       # расркыть все фильмы
 for icon in icons:
@@ -24,24 +32,29 @@ schedules = driver.find_elements_by_class_name("arr_select")        # раскр
 for schedule in schedules:
     driver.execute_script("arguments[0].click();", schedule)
 
+names = []
+film_names = driver.find_elements_by_class_name("schedule")
 
-cells = []
-tds = driver.find_elements_by_class_name("txt-rounded")
-for td in tds:
-    cells.append(td.get_attribute("innerHTML"))
-
-# index = 0
-# table = driver.find_element_by_class_name("schedule")
-# rows = table.find_element_by_tag_name("tr")
-# rows.ge
+for name in film_names[1:]:
+    names.append(name.get_attribute("id"))
 
 
-# print(cin)
+all_names = []
+first_names = driver.find_elements_by_xpath("//*[@id='premiers-today']/div/ul/li/div/div[2]/dl/dt[2]/a")
+for first_name in first_names:
+    all_names.append(first_name.get_attribute("innerHTML"))
 
-cinemas = driver.find_elements_by_xpath("//*[@id='seances_8165']/tbody/tr/td[1]/a")
-print([cinema.text for cinema in cinemas])
+last_names = driver.find_elements_by_xpath("//*[@id='premiers-today']/div/div/div/div/div[2]/dl/dt[2]/a")
+for get_name in last_names:
+    all_names.append(get_name.get_attribute("innerHTML"))
 
-print(cells)
+print(all_names)
+
+for film in names:
+    print(film)
+    print(time_for_film(film), "\n")
+
+
 time.sleep(2)
-driver.close()
 
+driver.close()
