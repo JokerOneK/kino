@@ -1,60 +1,64 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import Select
 import time
 
 
-def time_for_film(film):
-    times = []
-    cells = driver.find_elements_by_xpath("//*[@id='%s']/tbody/tr/td[2]/div" % film)     # достать время фильма
-    for cell in cells:
-        times.append(cell.get_attribute("innerHTML"))
+def timetable_for_film(film):
+    timetable_list = []
+    times = driver.find_elements_by_xpath("//*[@id='%s']/tbody/tr/td[2]/div" % film)     # достать время фильма
+    for time in times:
+        timetable_list.append(time.get_attribute("innerHTML"))
 
-    cin = []
+    cinemas_list = []
     cinemas = driver.find_elements_by_xpath("//*[@id='%s']/tbody/tr/td[1]/a" % film)     # достать кино фильма
-    # print([cinema.text for cinema in cinemas])
-    for cine in cinemas:
-        cin.append(cine.text)
+    for cinema in cinemas:
+        cinemas_list.append(cinema.text)
 
-    return list((zip(times, cin)))
+    return list((zip(timetable_list, cinemas_list)))
 
+
+def open_all():
+    icons = driver.find_elements_by_class_name("mov_title_block")  # расркыть все фильмы
+    for icon in icons:
+        driver.execute_script("arguments[0].click();", icon)
+
+    schedules = driver.find_elements_by_class_name("arr_select")  # раскрыть всё расписание
+    for schedule in schedules:
+        driver.execute_script("arguments[0].click();", schedule)
+
+def get_name(film):
+    name = driver.find_element_by_xpath("//a[@href='/movie/8286']")
 
 driver = webdriver.Chrome()
 
 driver.get("http://www.kino.kz")
 
-icons = driver.find_elements_by_class_name("mov_title_block")       # расркыть все фильмы
-for icon in icons:
-    driver.execute_script("arguments[0].click();", icon)
+open_all()
+
+films_id_list = []
+films_id = driver.find_elements_by_class_name("schedule")
+
+for film_id in films_id[1:]:
+    films_id_list.append(film_id.get_attribute("id"))
 
 
-schedules = driver.find_elements_by_class_name("arr_select")        # раскрыть всё расписание
-for schedule in schedules:
-    driver.execute_script("arguments[0].click();", schedule)
+all_names_list = []
 
-names = []
-film_names = driver.find_elements_by_class_name("schedule")
-
-for name in film_names[1:]:
-    names.append(name.get_attribute("id"))
-
-
-all_names = []
 first_names = driver.find_elements_by_xpath("//*[@id='premiers-today']/div/ul/li/div/div[2]/dl/dt[2]/a")
 for first_name in first_names:
-    all_names.append(first_name.get_attribute("innerHTML"))
+    all_names_list.append(first_name.get_attribute("innerHTML"))
 
 last_names = driver.find_elements_by_xpath("//*[@id='premiers-today']/div/div/div/div/div[2]/dl/dt[2]/a")
-for get_name in last_names:
-    all_names.append(get_name.get_attribute("innerHTML"))
+for last_name in last_names:
+    all_names_list.append(last_name.get_attribute("innerHTML"))
 
-print(all_names)
-
-for film in names:
-    print(film)
-    print(time_for_film(film), "\n")
+print(all_names_list)
 
 
-time.sleep(2)
+for film in films_id_list:
+    print(timetable_for_film(film), "\n")
+
 
 driver.close()
+
+//*[@id='premiers-today']/div/ul/li[2]/div/div[2]/dl/dt[2]/a
+//*[@id='premiers-today']/div/div/div[3]/div/div[2]/dl/dt[2]/a
