@@ -33,3 +33,11 @@
 # //*[@id="premiers-today"]/div/div/div[11]/div/div[2]/dl/dt[2]/a
 # //*[@id="premiers-today"]/div/div/div[7]/div/div[2]/dl/dt[2]/a
 # seances_8165
+
+# def get_name(film):       # не сработало
+#     print(film[-4:])
+#     name = driver.find_element_by_xpath("//a[@href='/movie/%i']" % int(film[-4:]))
+#     # print(name)
+#     title = name.get_attribute("innerHTML")
+#     print(title)
+#     return title

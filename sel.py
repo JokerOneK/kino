@@ -1,6 +1,13 @@
 from selenium import webdriver
-import time
+import sqlite3
 
+
+# conn = sqlite3.connect("movies.db")
+# cursor = conn.cursor()
+#
+# cursor.execute("""CREATE TABLE movies
+#                     (movie, time, cinema)
+#                 """)
 
 def timetable_for_film(film):
     timetable_list = []
@@ -13,7 +20,7 @@ def timetable_for_film(film):
     for cinema in cinemas:
         cinemas_list.append(cinema.text)
 
-    return list((zip(timetable_list, cinemas_list)))
+    return tuple(zip(timetable_list, cinemas_list))
 
 
 def open_all():
@@ -25,21 +32,12 @@ def open_all():
     for schedule in schedules:
         driver.execute_script("arguments[0].click();", schedule)
 
-def get_name(film):
-    name = driver.find_element_by_xpath("//a[@href='/movie/8286']")
 
 driver = webdriver.Chrome()
 
 driver.get("http://www.kino.kz")
 
 open_all()
-
-films_id_list = []
-films_id = driver.find_elements_by_class_name("schedule")
-
-for film_id in films_id[1:]:
-    films_id_list.append(film_id.get_attribute("id"))
-
 
 all_names_list = []
 
@@ -53,12 +51,24 @@ for last_name in last_names:
 
 print(all_names_list)
 
+films_id_list = []
+films_id = driver.find_elements_by_class_name("schedule")
 
+for film_id in films_id[1:]:
+    films_id_list.append(film_id.get_attribute("id"))
+
+timetables = []
 for film in films_id_list:
     print(timetable_for_film(film), "\n")
 
 
+print(timetables)
 driver.close()
 
-//*[@id='premiers-today']/div/ul/li[2]/div/div[2]/dl/dt[2]/a
-//*[@id='premiers-today']/div/div/div[3]/div/div[2]/dl/dt[2]/a
+# movies = [
+#
+#
+#             ]
+#
+# cursor.executemany("INSERT INTO movies VALUES (?,?,?)", movies)
+# conn.commit()
