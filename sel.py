@@ -1,13 +1,6 @@
 from selenium import webdriver
-import sqlite3
+from pprint import pprint
 
-
-# conn = sqlite3.connect("movies.db")
-# cursor = conn.cursor()
-#
-# cursor.execute("""CREATE TABLE movies
-#                     (movie, time, cinema)
-#                 """)
 
 def timetable_for_film(film):
     timetable_list = []
@@ -33,11 +26,23 @@ def open_all():
         driver.execute_script("arguments[0].click();", schedule)
 
 
+def tuple_union(films, timetable):
+    result = [
+        (k, *v)
+        for k, r in zip(films, timetable)
+        for v in r
+    ]
+
+    return result
+
+
 driver = webdriver.Chrome()
 
 driver.get("http://www.kino.kz")
 
 open_all()
+
+total_list = []
 
 all_names_list = []
 
@@ -49,7 +54,7 @@ last_names = driver.find_elements_by_xpath("//*[@id='premiers-today']/div/div/di
 for last_name in last_names:
     all_names_list.append(last_name.get_attribute("innerHTML"))
 
-print(all_names_list)
+all_names_tuple = tuple(all_names_list)
 
 films_id_list = []
 films_id = driver.find_elements_by_class_name("schedule")
@@ -59,16 +64,8 @@ for film_id in films_id[1:]:
 
 timetables = []
 for film in films_id_list:
-    print(timetable_for_film(film), "\n")
+    timetables.append(timetable_for_film(film))
 
-
-print(timetables)
+result = tuple_union(all_names_tuple, timetables)
+# pprint(result)
 driver.close()
-
-# movies = [
-#
-#
-#             ]
-#
-# cursor.executemany("INSERT INTO movies VALUES (?,?,?)", movies)
-# conn.commit()
