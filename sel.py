@@ -36,7 +36,23 @@ def tuple_union(films, timetable):
     return result
 
 
-driver = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+prefs = {'profile.default_content_setting_values': {'cookies': 2, 'images': 2,          #Turn off images/css
+                            'plugins': 2, 'popups': 2, 'geolocation': 2,
+                            'notifications': 2, 'auto_select_certificate': 2, 'fullscreen': 2,
+                            'mouselock': 2, 'mixed_script': 2, 'media_stream': 2,
+                            'media_stream_mic': 2, 'media_stream_camera': 2, 'protocol_handlers': 2,
+                            'ppapi_broker': 2, 'automatic_downloads': 2, 'midi_sysex': 2,
+                            'push_messaging': 2, 'ssl_cert_decisions': 2, 'metro_switch_to_desktop': 2,
+                            'protected_media_identifier': 2, 'app_banner': 2, 'site_engagement': 2,
+                            'durable_storage': 2}}
+
+options.add_experimental_option('prefs', prefs)
+options.add_argument("start-maximized")
+options.add_argument("disable-infobars")
+options.add_argument("--disable-extensions")
+driver = webdriver.Chrome(options=options)
+
 
 driver.get("http://www.kino.kz")
 
@@ -45,6 +61,8 @@ open_all()
 total_list = []
 
 all_names_list = []
+
+# getting names of all films
 
 first_names = driver.find_elements_by_xpath("//*[@id='premiers-today']/div/ul/li/div/div[2]/dl/dt[2]/a")
 for first_name in first_names:
@@ -57,6 +75,9 @@ for last_name in last_names:
 all_names_tuple = tuple(all_names_list)
 
 films_id_list = []
+
+# getting ids of all films
+
 films_id = driver.find_elements_by_class_name("schedule")
 
 for film_id in films_id[1:]:
@@ -67,5 +88,7 @@ for film in films_id_list:
     timetables.append(timetable_for_film(film))
 
 result = tuple_union(all_names_tuple, timetables)
+
 # pprint(result)
+
 driver.close()

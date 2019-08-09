@@ -13,5 +13,4 @@ if cursor.fetchall() != sel.result:
     conn.commit()
 
 
-
 conn.close()
