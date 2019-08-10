@@ -62,7 +62,7 @@ total_list = []
 
 all_names_list = []
 
-# getting names of all films
+# GETTING NAMES OF ALL MOVIES
 
 first_names = driver.find_elements_by_xpath("//*[@id='premiers-today']/div/ul/li/div/div[2]/dl/dt[2]/a")
 for first_name in first_names:
@@ -76,7 +76,7 @@ all_names_tuple = tuple(all_names_list)
 
 films_id_list = []
 
-# getting ids of all films
+# GETTING IDs OF ALL MOVIES
 
 films_id = driver.find_elements_by_class_name("schedule")
 
