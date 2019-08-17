@@ -1,5 +1,4 @@
 from selenium import webdriver
-from pprint import pprint
 
 
 def timetable_for_film(film):
@@ -52,8 +51,6 @@ options.add_argument("start-maximized")
 options.add_argument("disable-infobars")
 options.add_argument("--disable-extensions")
 driver = webdriver.Chrome(options=options)
-
-
 driver.get("http://www.kino.kz")
 
 open_all()
@@ -87,8 +84,9 @@ timetables = []
 for film in films_id_list:
     timetables.append(timetable_for_film(film))
 
-result = tuple_union(all_names_tuple, timetables)
-
-# pprint(result)
 
 driver.close()
+
+result = tuple_union(all_names_tuple, timetables)
+
+

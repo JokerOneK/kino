@@ -13,4 +13,4 @@ while True:
         cursor.executemany("INSERT INTO movies VALUES (?,?,?)", sel.result)
         conn.commit()
     conn.close()
-    # time.sleep(2)
+    time.sleep(2)
