@@ -47,11 +47,11 @@ prefs = {'profile.default_content_setting_values': {'cookies': 2, 'images': 2,  
                             'push_messaging': 2, 'ssl_cert_decisions': 2, 'metro_switch_to_desktop': 2,
                             'protected_media_identifier': 2, 'app_banner': 2, 'site_engagement': 2,
                             'durable_storage': 2}}
-
 options.add_experimental_option('prefs', prefs)
 options.add_argument("start-maximized")
 options.add_argument("disable-infobars")
 options.add_argument("--disable-extensions")
+options.add_argument('--headless')
 
 while True:
 
@@ -63,6 +63,10 @@ while True:
     total_list = []
 
     all_names_list = []
+
+    films_id_list = []
+
+    timetables = []
 
 # ПОЛУЕНИЕ ИМЕН ФИЛЬМОВ
 
@@ -76,13 +80,12 @@ while True:
 
     all_names_tuple = tuple(all_names_list)
 
-    films_id_list = []
 
 # ПОЛУЧЕНИЕ id ФИЛЬМОВ
 
-    films_id = driver.find_elements_by_class_name("schedule")
+    films_ids = driver.find_elements_by_class_name("schedule")
 
-    for film_id in films_id[1:]:
+    for film_id in films_ids[1:]:
         films_id_list.append(film_id.get_attribute("id"))
 
     timetables = []
@@ -91,7 +94,6 @@ while True:
 
     result = tuple_union(all_names_tuple, timetables)
     driver.close()
-
 
     conn = sqlite3.connect("movies.db")
     cursor = conn.cursor()
@@ -103,5 +105,4 @@ while True:
         cursor.executemany("INSERT INTO movies VALUES (?,?,?)", result)
         conn.commit()
     conn.close()
-
-    time.sleep(300)
+    time.sleep(5)
