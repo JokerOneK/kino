@@ -33,13 +33,13 @@ films_set = set(cursor.fetchall())
 
 bot = telebot.TeleBot('965005174:AAFV2x1XtLxzTACxKOOaun9ShEkDoiq88bw')
 
-
-remove_markup = types.ReplyKeyboardRemove(selective=False)
+markup2 = types.ReplyKeyboardRemove()
+markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=True, resize_keyboard=True)
 
 
 @bot.message_handler(commands=['start', 'help'])
 def get_text_messages(message):
-    markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=False, resize_keyboard=True)
+    # markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=True, resize_keyboard=True)
     bot.send_message(message.from_user.id,
                      "Перед вами список фильмов на сегодня. Выберите фильм, "
                      "расписание которого вы хотели бы увидеть: ",
@@ -48,8 +48,8 @@ def get_text_messages(message):
 
 @bot.message_handler(func=lambda message: True)
 def send_timetable(message):
-    markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=False, resize_keyboard=True)
-    except_markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=False, resize_keyboard=True)
+    markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=True, resize_keyboard=True)
+    except_markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=True, resize_keyboard=True)
     if len(get_timetable(message.text)) > 4096:
         for x in range(0, len(get_timetable(message.text)), 4096):
             bot.send_message(message.from_user.id, get_timetable(message.text)[x:x + 4096],
