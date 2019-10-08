@@ -33,13 +33,12 @@ films_set = set(cursor.fetchall())
 
 bot = telebot.TeleBot('965005174:AAFV2x1XtLxzTACxKOOaun9ShEkDoiq88bw')
 
-markup2 = types.ReplyKeyboardRemove()
-markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=True, resize_keyboard=True)
+# markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=True, resize_keyboard=True)
 
 
 @bot.message_handler(commands=['start', 'help'])
 def get_text_messages(message):
-    # markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=True, resize_keyboard=True)
+    markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=True, resize_keyboard=True)
     bot.send_message(message.from_user.id,
                      "Перед вами список фильмов на сегодня. Выберите фильм, "
                      "расписание которого вы хотели бы увидеть: ",
