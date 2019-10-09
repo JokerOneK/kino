@@ -31,7 +31,7 @@ sql = "SELECT movie FROM movies"
 cursor.execute(sql)
 films_set = set(cursor.fetchall())
 
-bot = telebot.TeleBot('965005174:AAFV2x1XtLxzTACxKOOaun9ShEkDoiq88bw')
+bot = telebot.TeleBot('#')
 
 # markup = types.ReplyKeyboardMarkup(row_width=2, one_time_keyboard=True, resize_keyboard=True)
 
