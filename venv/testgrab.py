@@ -15,11 +15,43 @@ def get_html(url, params=''):
 
 
 def get_content(html):
+
     soup = BeautifulSoup(html, 'html.parser')
     items = soup.find_all('a', class_='poster')
     cards = []
-    print(items)
+
+    for item in items:
+        cards.append(
+            {
+                'href': str(item.get('href'))
+            }
+        )
+    return cards
+
+
+def get_schedule(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    times = soup.find_all('div', class_='schedule-time')
+    cinemas = soup.find_all('div', class_='cinema-title')
+    schedules = dict(zip(cinemas.text, times.text))
+    print(schedules.text)
+
+
+
+
+
 
 
 html = get_html(URL)
-get_content(html.text)
+movies = get_content(html.text)
+
+movie_url = 'https://kino.kz/'
+for movie in movies:
+
+    movie_html = get_html(movie_url + "".join(movie.values()))
+    # print(movie_url + "".join(movie.values()))
+    # print(movie_html.text)
+    get_schedule(movie_html)
+
+
+
